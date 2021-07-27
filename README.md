@@ -1,4 +1,9 @@
-# :key: fabric-permissions-api
+# :key: fabric-permissions-api (Fork from luck's fabric-permissions-api)
+
+## Important Notice
+
+This is a simple fork of luck's fabric-permissions-api but for support for Minecraft 1.14.4, this project was not fully tested use it at your own risk.
+
 
 A simple permissions API for Fabric. It allows mods to easily run permission checks against permission providers.
 
