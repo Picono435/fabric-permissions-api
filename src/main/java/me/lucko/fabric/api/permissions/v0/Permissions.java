@@ -33,6 +33,7 @@ import net.minecraft.server.command.ServerCommandSource;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
+import java.util.function.BooleanSupplier;
 import java.util.function.Predicate;
 
 /**
@@ -63,7 +64,8 @@ public interface Permissions {
      * @return the result of the permission check
      */
     static boolean check(@NotNull CommandSource source, @NotNull String permission, boolean defaultValue) {
-        return getPermissionValue(source, permission).orElse(defaultValue);
+        TriState triState = getPermissionValue(source, permission);
+        return triState == TriState.DEFAULT ? defaultValue : triState.get();
     }
 
     /**
@@ -76,7 +78,8 @@ public interface Permissions {
      * @return the result of the permission check
      */
     static boolean check(@NotNull CommandSource source, @NotNull String permission, int defaultRequiredLevel) {
-        return getPermissionValue(source, permission).orElseGet(() -> source.hasPermissionLevel(defaultRequiredLevel));
+        TriState triState = getPermissionValue(source, permission);
+        return triState == TriState.DEFAULT ? source.hasPermissionLevel(defaultRequiredLevel) : triState.get();
     }
 
     /**
@@ -88,7 +91,8 @@ public interface Permissions {
      * @return the result of the permission check
      */
     static boolean check(@NotNull CommandSource source, @NotNull String permission) {
-        return getPermissionValue(source, permission).orElse(false);
+        TriState triState = getPermissionValue(source, permission);
+        return triState != TriState.DEFAULT && triState.get();
     }
 
     /**
